@@ -3,6 +3,18 @@ const app = express();
 const port = process.env.PORT || 5001;
 const dbConnectionString = process.env.DATABASE_URL || "Something";
 
+
+
+
+
+
+const { Pool } = require('pg');
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true
+});
+
+
 app.get('/db', async (req, res) => {
     try {
       const client = await pool.connect()
