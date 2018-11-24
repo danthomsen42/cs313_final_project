@@ -2,7 +2,9 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 5001;
 const dbConnectionString = process.env.DATABASE_URL || "Something";
-
+app.listen(port, function(){
+    console.log("Listening on port " + port);
+});
 
 
 
@@ -33,9 +35,7 @@ app.get('/db', async (req, res) => {
 
 app.get("/person", getPerson);
 
-app.listen(port, function(){
-    console.log("Listening on port " + port);
-});
+
 
 
 function getPerson(req, res){
