@@ -2,6 +2,9 @@ const express = require("express");
 const app = express();
 //const port = process.env.PORT || 5001;
 
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
 app.set("port", (process.env.PORT || 5001));
 
 //const dbConnectionString = process.env.DATABASE_URL || "Something";
