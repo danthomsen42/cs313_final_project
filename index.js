@@ -1,10 +1,20 @@
 const express = require("express");
 const app = express();
-const port = process.env.PORT || 5001;
+//const port = process.env.PORT || 5001;
+
+app.set("port", (process.env.PORT || 5001));
+
+
+
 const dbConnectionString = process.env.DATABASE_URL || "Something";
-app.listen(port, function(){
-    console.log("Listening on port " + port);
+app.listen(app.get("port"), function() {
+    console.log("Now listening for connections on port ", app.get("port"));
 });
+
+
+//app.listen(port, function(){
+//    console.log("Listening on port " + port);
+//});
 
 
 
