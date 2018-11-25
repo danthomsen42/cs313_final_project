@@ -18,6 +18,7 @@ CREATE TABLE game_info
 (
     id SERIAL PRIMARY KEY NOT NULL
     , game_session_id INT REFERENCES game_session(id)
+    , game_name VARCHAR(100) NOT NULL
     , player_1_id INT REFERENCES player(id)
     , player_2_id INT REFERENCES player(id)
     , player_1_coordinate_x INTEGER NOT NULL
@@ -31,4 +32,4 @@ INSERT INTO game_session(session_name, session_password) VALUES ('my_game', 'abc
 INSERT INTO player(player_name, player_password) VALUES ('MadMen1', '321cba');
 INSERT INTO player(player_name, player_password) VALUES ('HappyChildren3', '86325d');
 
-INSERT INTO game_info(game_session_id, player_1_id, player_2_id, player_1_coordinate_x, player_1_coordinate_y, player_2_coordinate_x, player_2_coordinate_y) VALUES ('1', '1', '2', '45', '60', '80', '100');
+INSERT INTO game_info(game_session_id, player_1_id, player_2_id, player_1_coordinate_x, player_1_coordinate_y, player_2_coordinate_x, player_2_coordinate_y) VALUES ('1', 'GameOne', '1', '2', '45', '60', '80', '100');
