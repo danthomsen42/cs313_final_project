@@ -10,7 +10,8 @@ const {
     Pool
 } = require("pg");
 
-const connectionString = process.env.DATABASE_URL || "postgres://familyhistoryuser:elijah@localhost:5432/familyhistorydemo";
+const connectionString = process.env.DATABASE_URL;
+//|| "postgres://familyhistoryuser:elijah@localhost:5432/familyhistorydemo";
 const pool = new Pool({
     connectionString: connectionString
 });
@@ -40,7 +41,8 @@ function getGameNames(req, res) {
             res.status(500).json({success:false, data: error});
         }
         else {
-            res.render('page', {'rows': result});    
+            res.render('SignInPage', {name: result});  
+//            res.json(result[0]); 
         } 
     });
 }
