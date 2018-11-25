@@ -49,7 +49,7 @@ function getGameNames(req, res) {
 
 function getGameNameFromDb(id, callback){
     console.log("getGameNameFromDb called with id: ", id);
-    var sql = "SELECT game_name FROM game_info WHERE id = $1::int";
+    var sql = "SELECT game_name FROM game_info;";
     var params = [id];
     pool.query(sql, params, function(err, result){
        if (err) {
