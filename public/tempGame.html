@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        canvas {
+            border: 4px solid #000000;
+            background-color: lightgreen;
+        }
+    </style>
+</head>
+
+<body onload="startGame()" onkeydown="whichDir()">
+    <script>
+        var gameHeight = 400;
+        var gameWidth = 500;
+        var player1Red
+        var player2Blue
+        var wall
+        var borderL
+        var borderB
+        var borderR
+        var borderT
+
+        //The starting positon of the Game
+        function startGame() {
+            myGameArea.start();
+            player1Red = new component(30, 30, "red", 20, 120);
+            wall = new component(10, 200, "black", 300, 120);
+            borderL = new component(10, gameHeight, "black", 0, 0);
+            borderB = new component(gameWidth, 10, "black", 0, (gameHeight - 10));
+            borderR = new component(10, gameHeight, "black", (gameWidth - 10), 0);
+            borderT = new component(gameWidth, 10, "black", 0, 0);
+            player2Blue = new component(30, 30, "blue", 80, 105);
+        }
+
+        //The "class" or "struct of the player character
+        function component(width, height, color, x, y) {
+            this.width = width;
+            this.height = height;
+            this.speedX = 0;
+            this.speedY = 0;
+            this.x = x;
+            this.y = y;
+            this.update = function() {
+                ctx = myGameArea.context;
+                ctx.fillStyle = color;
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+                //console.log("x: " + this.x + " y: " + this.y);
+            }
+
+            this.newPos = function() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.hitBottom();
+                this.hitTop();
+            }
+            this.hitBottom = function() {
+                var rockbottom = myGameArea.canvas.height - this.height;
+                if (this.y > rockbottom) {
+                    this.y = rockbottom;
+                }
+            }
+            this.hitTop = function() {
+                var rockTop = myGameArea.canvas.height + this.height;
+                if (this.y > rockTop) {
+                    this.y = rockTop;
+                }
+            }
+
+            this.crashWith = function(otherobj) {
+                var myleft = this.x;
+                var myright = this.x + (this.width);
+                var mytop = this.y;
+                var mybottom = this.y + (this.height);
+                var otherleft = otherobj.x + 1;
+                var otherright = otherobj.x + (otherobj.width) + 1;
+                var othertop = otherobj.y + 1;
+                var otherbottom = otherobj.y + (otherobj.height) + 1;
+                var crash = true;
+                if ((mybottom < othertop) ||
+                    (mytop > otherbottom) ||
+                    (myright < otherleft) ||
+                    (myleft > otherright)) {
+                    crash = false;
+                }
+                return crash;
+            }
+        }
+
+        //Describes the canvas area qualities
+        var myGameArea = {
+            canvas: document.createElement("canvas"),
+            start: function() {
+                this.canvas.width = gameWidth;
+                this.canvas.height = gameHeight;
+                this.context = this.canvas.getContext("2d");
+                document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+                this.interval = setInterval(updateGameArea, 20);
+            },
+            clear: function() {
+                this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            },
+            stop: function() {
+                clearInterval(this.interval);
+            }
+        }
+
+        //Updates the Game screen every frame
+        function updateGameArea() {
+            if (player1Red.crashWith(wall) || player1Red.crashWith(borderL) || player1Red.crashWith(player2Blue) || player1Red.crashWith(borderB) || player1Red.crashWith(borderR) || player1Red.crashWith(borderT)) {
+                richochet();
+                myGameArea.clear();
+
+                wall.update();
+                borderL.update();
+                borderB.update();
+                borderR.update();
+                borderT.update();
+                player1Red.newPos();
+                player1Red.update();
+                player2Blue.update();
+                //                myGameArea.stop();
+            } else {
+                myGameArea.clear();
+                //                var direction = event.which || event.keyCode;
+                //                console.log(direction);
+                //                player1Red.x += 1;
+                //                player1Red.y += .5;
+                //                player2Blue.x += 1;
+                //                player2Blue.y -= .5;
+                borderL.update();
+                borderB.update();
+                borderR.update();
+                borderT.update();
+                wall.update();
+                player1Red.newPos();
+                player1Red.update();
+                player2Blue.update();
+            }
+        }
+
+        function moveup() {
+            player1Red.speedY -= 1;
+        }
+
+        function movedown() {
+            player1Red.speedY += 1;
+        }
+
+        function moveleft() {
+            player1Red.speedX -= 1;
+        }
+
+        function moveright() {
+            player1Red.speedX += 1;
+        }
+
+
+        function richochet() {
+            //            player1Red.speedX *= -1;
+            if (Math.abs(player1Red.speedX) > Math.abs(player1Red.speedY)) {
+                player1Red.speedX *= -1;
+            } else {
+                player1Red.speedY *= -1;
+            }
+            //            player1Red.speedY *= -1;
+            //            if (Math.abs(player1Red.speedY) > 1){
+            //            player1Red.speedY *= .7;
+            //            }
+        }
+
+        function stopMove() {
+            player1Red.speedX = 0;
+            player1Red.speedY = 0;
+        }
+
+
+        function whichDir() {
+            var direction = event.which || event.keyCode;
+            console.log(direction);
+            //            //Up Keyboard
+            //            if (event.keyCode = 38){
+            //                moveup();
+            //            }
+
+            switch (direction) {
+
+                case 38:
+                    moveup();
+                    break;
+                case 40:
+                    movedown();
+                    break;
+                case 39:
+                    moveright();
+                    break;
+                case 37:
+                    moveleft();
+                    break;
+                case 32:
+                    stopMove();
+                    break;
+            }
+
+
+        }
+    </script>
+
+    <p>Use the Key board to move and space to stop</p>
+    <!--
+    <button onclick="moveup()" onmouseup="stopMove()" ontouchstart="moveup()">UP</button>
+    <button onclick="movedown()" onmouseup="stopMove()" ontouchstart="movedown()">DOWN</button>
+    <button onclick="moveleft()" onmouseup="stopMove()" ontouchstart="moveleft()">LEFT</button>
+    <button onclick="moveright()" onmouseup="stopMove()" ontouchstart="moveright()">RIGHT</button>
+-->
+</body>
+
+</html>
