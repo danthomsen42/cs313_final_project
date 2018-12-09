@@ -1,11 +1,28 @@
 const express = require("express");
 const app = express();
+
 app.use(express.static('public'))
 //const port = process.env.PORT || 5001;
+var http = require('http');
+var path = require('path');
+var server = http.Server(app);
+var socketIO = require('socket.io');
+var io = socketIO(server);
+app.set("port", (process.env.PORT || 5001));
 
-app.set('views', __dirname, '/views');
-app.set('view engine', 'ejs');
+app.use('/public', express.static(__dirname + '/public'));
+//app.set('views', __dirname, '/views');
+//app.set('view engine', 'ejs');
  
+app.get('/', function(request, response) {
+  response.sendFile(path.join(__dirname, 'tempGame.html'));
+});
+
+app.listen(app.get("port"), function () {
+    console.log("Now listening for connections on port ", app.get("port"));
+});
+
+
 const {
     Pool
 } = require("pg");
@@ -17,12 +34,9 @@ const pool = new Pool({
 });
 
 
-app.set("port", (process.env.PORT || 5001));
+
 
 //const dbConnectionString = process.env.DATABASE_URL || "Something";
-app.listen(app.get("port"), function () {
-    console.log("Now listening for connections on port ", app.get("port"));
-});
 
 app.get("/getPerson", getPerson);
 
@@ -118,3 +132,9 @@ function getPersonFromDb(id, callback){
 
 
 
+io.on('connection', function(socket) {
+});
+
+setInterval(function() {
+  io.sockets.emit('message', 'hi!');
+}, 1000);
