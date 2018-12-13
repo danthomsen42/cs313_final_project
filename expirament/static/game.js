@@ -1,3 +1,4 @@
+// Biggest thanks to this guy: https://hackernoon.com/how-to-build-a-multiplayer-browser-game-4a793818c29b
 var socket = io();
 socket.on('message', function (data) {
     console.log(data);
