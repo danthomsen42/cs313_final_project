@@ -1,4 +1,5 @@
 // Biggest thanks to this guy: https://hackernoon.com/how-to-build-a-multiplayer-browser-game-4a793818c29b
+//and this guy who answered: https://stackoverflow.com/questions/31106189/create-a-simple-10-second-countdown
 var socket = io();
 socket.on('message', function (data) {
     console.log(data);
