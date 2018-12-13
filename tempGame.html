@@ -15,8 +15,8 @@
 
 <body onload="startGame()" onkeydown="whichDir()">
     <script>
-        var gameHeight = 400;
-        var gameWidth = 500;
+        var gameHeight = 500;
+        var gameWidth = 800;
         var player1Red
         var player2Blue
         var wall
@@ -34,7 +34,7 @@
             borderB = new component(gameWidth, 10, "black", 0, (gameHeight - 10));
             borderR = new component(10, gameHeight, "black", (gameWidth - 10), 0);
             borderT = new component(gameWidth, 10, "black", 0, 0);
-            player2Blue = new component(30, 30, "blue", 80, 105);
+//            player2Blue = new component(30, 30, "blue", 80, 105);
         }
 
         //The "class" or "struct of the player character and any other object
@@ -111,10 +111,10 @@
 
         //Updates the Game screen every frame
         function updateGameArea() {
-            if (player1Red.crashWith(wall) || player1Red.crashWith(borderL) || player1Red.crashWith(player2Blue) || player1Red.crashWith(borderB) || player1Red.crashWith(borderR) || player1Red.crashWith(borderT)) {
+            if (player1Red.crashWith(wall) || player1Red.crashWith(borderL) || player1Red.crashWith(borderB) || player1Red.crashWith(borderR) || player1Red.crashWith(borderT)) {
                 richochet();
                 myGameArea.clear();
-
+//player1Red.crashWith(player2Blue) || 
                 wall.update();
                 borderL.update();
                 borderB.update();
@@ -122,7 +122,7 @@
                 borderT.update();
                 player1Red.newPos();
                 player1Red.update();
-                player2Blue.update();
+//                player2Blue.update();
                 //                myGameArea.stop();
             } else {
                 myGameArea.clear();
@@ -134,7 +134,7 @@
                 wall.update();
                 player1Red.newPos();
                 player1Red.update();
-                player2Blue.update();
+//                player2Blue.update();
             }
         }
 
@@ -159,40 +159,9 @@
             spedX = player1Red.speedX;
             spedY = player1Red.speedY;
 
-//            if (Math.abs(player1Red.speedX) > Math.abs(player1Red.speedY)) {
-//                stopMove();
-//
-//
-//
-//                player1Red.speedX = spedX;
-//                player1Red.speedY = spedY;
+
                 player1Red.speedX *= -1;
 
-//            } else if (Math.abs(player1Red.speedY) > Math.abs(player1Red.speedX)) {
-//                stopMove();
-//
-//
-//                player1Red.speedX = spedX;
-//                player1Red.speedY = spedY;
-                player1Red.speedY *= -1;
-
-//
-//            } else {
-//                //            stopMove();
-//                player1Red.speedY *= -1;
-//                player1Red.speedX *= -1;
-//            }
-//
-//            myGameArea.clear();
-//
-//            borderL.update();
-//            borderB.update();
-//            borderR.update();
-//            borderT.update();
-//            wall.update();
-//            player1Red.newPos();
-//            player1Red.update();
-//            player2Blue.update();
 
 
         }
